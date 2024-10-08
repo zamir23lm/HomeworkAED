@@ -46,7 +46,7 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     return x;
 }
 
-// Rotación izquierda
+
 template <typename T>
 AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     AVLNode<T>* y = x->right;
@@ -64,6 +64,7 @@ AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     return y;
 }
 
+
 template <typename T>
 AVLNode<T>* AVLTree<T>::minValueNode(AVLNode<T>* node) {
     AVLNode<T>* current = node;
@@ -72,7 +73,6 @@ AVLNode<T>* AVLTree<T>::minValueNode(AVLNode<T>* node) {
     return current;
 }
 
-// Inserción
 template <typename T>
 AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
     if (node == nullptr)
@@ -85,22 +85,29 @@ AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
     else
         return node; // Claves duplicadas no permitidas
 
+    // Actualizar la altura de este ancestro
     node->height = std::max(height(node->left), height(node->right)) + 1;
 
+    // Obtener el factor de balance de este ancestro para verificar si está desbalanceado
     int balance = getBalance(node);
 
-    // Rotaciones para balancear
+    // Rotaciones para balancear el árbol
+
+    // Caso de rotación derecha (Left Left)
     if (balance > 1 && key < node->left->data)
         return rightRotate(node);
 
+    // Caso de rotación izquierda (Right Right)
     if (balance < -1 && key > node->right->data)
         return leftRotate(node);
 
+    // Caso Left Right
     if (balance > 1 && key > node->left->data) {
         node->left = leftRotate(node->left);
         return rightRotate(node);
     }
 
+    // Caso Right Left
     if (balance < -1 && key < node->right->data) {
         node->right = rightRotate(node->right);
         return leftRotate(node);
@@ -108,6 +115,7 @@ AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
 
     return node;
 }
+
 
 // Eliminar un nodo
 template <typename T>
