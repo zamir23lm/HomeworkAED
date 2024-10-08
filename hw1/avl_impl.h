@@ -227,25 +227,50 @@ bool AVLTree<T>::search(T key) {
 }
 
 template <typename T>
+void AVLTree<T>::preorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
+    if (node == nullptr) return;
+    result.push_back(node->data);  // Procesa el nodo actual primero
+    preorderTraversalHelper(node->left, result);  // Recorre el subárbol izquierdo
+    preorderTraversalHelper(node->right, result);  // Recorre el subárbol derecho
+}
+
+template <typename T>
 std::vector<T> AVLTree<T>::preorderTraversal() {
     std::vector<T> result;
-    preorder(root, result);
+    preorderTraversalHelper(root, result);
     return result;
 }
 
+
+
+template <typename T>
+void AVLTree<T>::inorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
+    if (node == nullptr) return;
+    inorderTraversalHelper(node->left, result);
+    result.push_back(node->data);  // Procesa el nodo actual en el medio
+    inorderTraversalHelper(node->right, result);
+}
 
 template <typename T>
 std::vector<T> AVLTree<T>::inorderTraversal() {
     std::vector<T> result;
-    inorder(root, result);
+    inorderTraversalHelper(root, result);
     return result;
 }
 
 
 template <typename T>
+void AVLTree<T>::postorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
+    if (node == nullptr) return;
+    postorderTraversalHelper(node->left, result);  // Recorre el subárbol izquierdo
+    postorderTraversalHelper(node->right, result);  // Recorre el subárbol derecho
+    result.push_back(node->data);  // Procesa el nodo actual al final
+}
+
+template <typename T>
 std::vector<T> AVLTree<T>::postorderTraversal() {
     std::vector<T> result;
-    postorder(root, result);
+    postorderTraversalHelper(root, result);
     return result;
 }
 
