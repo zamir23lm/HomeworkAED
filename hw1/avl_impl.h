@@ -21,9 +21,10 @@ AVLTree<T>::AVLTree() : root(nullptr) {}
 template <typename T>
 int AVLTree<T>::height(AVLNode<T>* node) {
     if (node == nullptr)
-        return -1;
+        return -1;  
     return node->height;
 }
+
 
 
 template <typename T>
@@ -41,11 +42,10 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     x->right = y;
     y->left = T2;
 
-    // Actualizar alturas
+    // Actualizar alturas después de la rotación
     y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
 
-    // Devolver nueva raíz
     return x;
 }
 
@@ -55,15 +55,14 @@ AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     AVLNode<T>* y = x->right;
     AVLNode<T>* T2 = y->left;
 
-    // Realizar rotación
+    // Realizar la rotación
     y->left = x;
     x->right = T2;
 
-    // Actualizar alturas
+    // Actualizar alturas después de la rotación
     x->height = std::max(height(x->left), height(x->right)) + 1;
     y->height = std::max(height(y->left), height(y->right)) + 1;
 
-    // Retornar nueva raíz
     return y;
 }
 
@@ -141,21 +140,29 @@ AVLNode<T>* AVLTree<T>::remove(AVLNode<T>* root, T key) {
     if (root == nullptr)
         return root;
 
+    // Actualizar la altura del nodo actual
     root->height = std::max(height(root->left), height(root->right)) + 1;
 
+    // Obtener el balance del nodo actual
     int balance = getBalance(root);
 
+    // Balancear el nodo si está desbalanceado
+
+    // Caso 1: Desbalanceado a la izquierda (left heavy)
     if (balance > 1 && getBalance(root->left) >= 0)
         return rightRotate(root);
 
+    // Caso 2: Desbalanceado a la izquierda y el subárbol izquierdo está desbalanceado a la derecha
     if (balance > 1 && getBalance(root->left) < 0) {
         root->left = leftRotate(root->left);
         return rightRotate(root);
     }
 
+    // Caso 3: Desbalanceado a la derecha (right heavy)
     if (balance < -1 && getBalance(root->right) <= 0)
         return leftRotate(root);
 
+    // Caso 4: Desbalanceado a la derecha y el subárbol derecho está desbalanceado a la izquierda
     if (balance < -1 && getBalance(root->right) > 0) {
         root->right = rightRotate(root->right);
         return leftRotate(root);
@@ -227,50 +234,25 @@ bool AVLTree<T>::search(T key) {
 }
 
 template <typename T>
-void AVLTree<T>::preorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
-    if (node == nullptr) return;
-    result.push_back(node->data);  // Procesa el nodo actual primero
-    preorderTraversalHelper(node->left, result);  // Recorre el subárbol izquierdo
-    preorderTraversalHelper(node->right, result);  // Recorre el subárbol derecho
-}
-
-template <typename T>
 std::vector<T> AVLTree<T>::preorderTraversal() {
     std::vector<T> result;
-    preorderTraversalHelper(root, result);
+    preorder(root, result);
     return result;
 }
 
-
-
-template <typename T>
-void AVLTree<T>::inorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
-    if (node == nullptr) return;
-    inorderTraversalHelper(node->left, result);
-    result.push_back(node->data);  // Procesa el nodo actual en el medio
-    inorderTraversalHelper(node->right, result);
-}
 
 template <typename T>
 std::vector<T> AVLTree<T>::inorderTraversal() {
     std::vector<T> result;
-    inorderTraversalHelper(root, result);
+    inorder(root, result);
     return result;
 }
 
 
 template <typename T>
-void AVLTree<T>::postorderTraversalHelper(AVLNode<T>* node, std::vector<T>& result) {
-    if (node == nullptr) return;
-    postorderTraversalHelper(node->left, result);  // Recorre el subárbol izquierdo
-    postorderTraversalHelper(node->right, result);  // Recorre el subárbol derecho
-    result.push_back(node->data);  // Procesa el nodo actual al final
-}
-
-template <typename T>
 std::vector<T> AVLTree<T>::postorderTraversal() {
     std::vector<T> result;
-    postorderTraversalHelper(root, result);
+    postorder(root, result);
     return result;
 }
 
