@@ -20,8 +20,11 @@ AVLTree<T>::AVLTree() : root(nullptr) {}
 
 template <typename T>
 int AVLTree<T>::height(AVLNode<T>* node) {
-    return node == nullptr ? -1 : node->height;
+    if (node == nullptr)
+        return -1;
+    return node->height;
 }
+
 
 template <typename T>
 int AVLTree<T>::getBalance(AVLNode<T>* node) {
@@ -34,7 +37,7 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     AVLNode<T>* x = y->left;
     AVLNode<T>* T2 = x->right;
 
-    // Realizar rotación
+    // Realizar la rotación
     x->right = y;
     y->left = T2;
 
@@ -42,7 +45,7 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
 
-    // Retornar nueva raíz
+    // Devolver nueva raíz
     return x;
 }
 
@@ -166,12 +169,12 @@ template <typename T>
 bool AVLTree<T>::search(AVLNode<T>* node, T key) {
     if (node == nullptr)
         return false;
-    if (key == node->data)
-        return true;
     if (key < node->data)
         return search(node->left, key);
-    else
+    else if (key > node->data)
         return search(node->right, key);
+    else
+        return true;  // key == node->data
 }
 
 // Recorrido preorder
