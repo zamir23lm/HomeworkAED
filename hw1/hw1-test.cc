@@ -70,21 +70,27 @@ TEST(AVLTreeTests, test4) {
   AVLTree<int> tree;
 
   tree.insert(10);
+  std::cout << "Altura después de insertar 10: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 0);
 
   tree.insert(20);
+  std::cout << "Altura después de insertar 20: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 1);
 
   tree.insert(30);
+  std::cout << "Altura después de insertar 30: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 2);
 
   tree.insert(40);
+  std::cout << "Altura después de insertar 40: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 2);
 
   tree.insert(50);
+  std::cout << "Altura después de insertar 50: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 3);
 
   tree.insert(25);
+  std::cout << "Altura después de insertar 25: " << tree.height() << std::endl;
   ASSERT_TRUE(tree.height() == 3);
 
   std::vector<int> detected = tree.inorderTraversal();
@@ -99,7 +105,7 @@ TEST(AVLTreeTests, test4) {
   std::vector<int> detected2 = tree.inorderTraversal();
   std::vector<int> expected2{20, 25, 30, 40, 50};
 
-  ASSERT_TRUE(detected == expected);
+  ASSERT_TRUE(detected2 == expected2);
 
   ASSERT_TRUE(tree.search(20) == true);
   ASSERT_TRUE(tree.search(25) == true);
@@ -108,3 +114,4 @@ TEST(AVLTreeTests, test4) {
   ASSERT_TRUE(tree.search(50) == true);
   ASSERT_TRUE(tree.search(15) == false);
 }
+
