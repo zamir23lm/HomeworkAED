@@ -42,14 +42,14 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     x->right = y;
     y->left = T2;
 
-    // Actualizar alturas después de la rotación
+    // Actualizar alturas
     y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
 
     return x;
 }
 
-// Rotación izquierda
+/// Rotación a la izquierda
 template <typename T>
 AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     AVLNode<T>* y = x->right;
@@ -59,7 +59,7 @@ AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     y->left = x;
     x->right = T2;
 
-    // Actualizar alturas después de la rotación
+    // Actualizar alturas
     x->height = std::max(height(x->left), height(x->right)) + 1;
     y->height = std::max(height(y->left), height(y->right)) + 1;
 
@@ -74,7 +74,6 @@ AVLNode<T>* AVLTree<T>::minValueNode(AVLNode<T>* node) {
     return current;
 }
 
-// Inserción
 template <typename T>
 AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
     if (node == nullptr)
@@ -87,29 +86,34 @@ AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
     else
         return node; // Claves duplicadas no permitidas
 
+    // Actualizar la altura del nodo actual
     node->height = std::max(height(node->left), height(node->right)) + 1;
 
+    // Calcular el balance del nodo actual
     int balance = getBalance(node);
 
     // Rotaciones para balancear
-    if (balance > 1 && key < node->left->data)
-        return rightRotate(node);
+    if (balance > 1 && key < node->left->data) {
+        return rightRotate(node);  // Rotación a la derecha
+    }
 
-    if (balance < -1 && key > node->right->data)
-        return leftRotate(node);
+    if (balance < -1 && key > node->right->data) {
+        return leftRotate(node);  // Rotación a la izquierda
+    }
 
     if (balance > 1 && key > node->left->data) {
-        node->left = leftRotate(node->left);
-        return rightRotate(node);
+        node->left = leftRotate(node->left);  // Rotación izquierda en hijo izquierdo
+        return rightRotate(node);  // Rotación derecha en nodo actual
     }
 
     if (balance < -1 && key < node->right->data) {
-        node->right = rightRotate(node->right);
-        return leftRotate(node);
+        node->right = rightRotate(node->right);  // Rotación derecha en hijo derecho
+        return leftRotate(node);  // Rotación izquierda en nodo actual
     }
 
     return node;
 }
+
 
 // Eliminar un nodo
 template <typename T>
