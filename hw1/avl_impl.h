@@ -38,11 +38,9 @@ AVLNode<T>* AVLTree<T>::rightRotate(AVLNode<T>* y) {
     AVLNode<T>* x = y->left;
     AVLNode<T>* T2 = x->right;
 
-    // Realizar la rotación
     x->right = y;
     y->left = T2;
 
-    // Actualizar alturas
     y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
 
@@ -55,11 +53,9 @@ AVLNode<T>* AVLTree<T>::leftRotate(AVLNode<T>* x) {
     AVLNode<T>* y = x->right;
     AVLNode<T>* T2 = y->left;
 
-    // Realizar la rotación
     y->left = x;
     x->right = T2;
 
-    // Actualizar alturas
     x->height = std::max(height(x->left), height(x->right)) + 1;
     y->height = std::max(height(y->left), height(y->right)) + 1;
 
@@ -84,31 +80,28 @@ AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* node, T key) {
     else if (key > node->data)
         node->right = insert(node->right, key);
     else
-        return node; // Claves duplicadas no permitidas
+        return node;
 
-    // Actualizar la altura del nodo actual
     node->height = std::max(height(node->left), height(node->right)) + 1;
 
-    // Calcular el balance del nodo actual
     int balance = getBalance(node);
 
-    // Rotaciones para balancear
     if (balance > 1 && key < node->left->data) {
-        return rightRotate(node);  // Rotación a la derecha
+        return rightRotate(node); 
     }
 
     if (balance < -1 && key > node->right->data) {
-        return leftRotate(node);  // Rotación a la izquierda
+        return leftRotate(node);  
     }
 
     if (balance > 1 && key > node->left->data) {
-        node->left = leftRotate(node->left);  // Rotación izquierda en hijo izquierdo
-        return rightRotate(node);  // Rotación derecha en nodo actual
+        node->left = leftRotate(node->left);  
+        return rightRotate(node); 
     }
 
     if (balance < -1 && key < node->right->data) {
-        node->right = rightRotate(node->right);  // Rotación derecha en hijo derecho
-        return leftRotate(node);  // Rotación izquierda en nodo actual
+        node->right = rightRotate(node->right);  
+        return leftRotate(node); 
     }
 
     return node;
@@ -144,29 +137,22 @@ AVLNode<T>* AVLTree<T>::remove(AVLNode<T>* root, T key) {
     if (root == nullptr)
         return root;
 
-    // Actualizar la altura del nodo actual
     root->height = std::max(height(root->left), height(root->right)) + 1;
 
-    // Obtener el balance del nodo actual
     int balance = getBalance(root);
 
-    // Balancear el nodo si está desbalanceado
 
-    // Caso 1: Desbalanceado a la izquierda (left heavy)
     if (balance > 1 && getBalance(root->left) >= 0)
         return rightRotate(root);
 
-    // Caso 2: Desbalanceado a la izquierda y el subárbol izquierdo está desbalanceado a la derecha
     if (balance > 1 && getBalance(root->left) < 0) {
         root->left = leftRotate(root->left);
         return rightRotate(root);
     }
 
-    // Caso 3: Desbalanceado a la derecha (right heavy)
     if (balance < -1 && getBalance(root->right) <= 0)
         return leftRotate(root);
 
-    // Caso 4: Desbalanceado a la derecha y el subárbol derecho está desbalanceado a la izquierda
     if (balance < -1 && getBalance(root->right) > 0) {
         root->right = rightRotate(root->right);
         return leftRotate(root);
@@ -185,7 +171,7 @@ bool AVLTree<T>::search(AVLNode<T>* node, T key) {
     else if (key > node->data)
         return search(node->right, key);
     else
-        return true;  // key == node->data
+        return true;  
 }
 
 // Recorrido preorder
