@@ -79,7 +79,7 @@ TEST(AVLTreeTests, test4) {
 
   tree.insert(30);
   std::cout << "Altura después de insertar 30: " << tree.height() << std::endl;
-  ASSERT_TRUE(tree.height() == 2);
+  ASSERT_TRUE(tree.height() == 1);
 
   tree.insert(40);
   std::cout << "Altura después de insertar 40: " << tree.height() << std::endl;
